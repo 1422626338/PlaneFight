@@ -12,6 +12,7 @@ export class Bg extends Component {
     speed:number = 100;
 
     update(deltaTime: number) {
+        //背景向下滚动
         let position1 = this.bg01.position;
         this.bg01.setPosition(position1.x,position1.y - this.speed * deltaTime, position1.z);
         let position2 = this.bg02.position;
@@ -20,6 +21,7 @@ export class Bg extends Component {
         let p1 = this.bg01.position;
         let p2 = this.bg02.position;
 
+        //无限循环
         if(this.bg01.position.y < -852){
             this.bg01.setPosition(p2.x,p2.y + 852, p2.z);   
         }

@@ -43,7 +43,10 @@ export class Player extends Component {
     shootType:ShootType = ShootType.OneShoot;
 
     protected onLoad(): void {
-        input.on(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
+        input.on(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);  
+        //.on是「绑定事件监听」的方法
+        //onTouchMove事件触发后的回调函数，自定义回调函数this.onTouchMove是callback(event);
+        //最后一个this是回调函数的上下文（作用域），确保 onTouchMove 函数里的 this 指向当前脚本组件（比如飞机脚本）
     }
 
     protected onDestroy(): void {
@@ -51,6 +54,7 @@ export class Player extends Component {
     }
 
     onTouchMove(event:EventTouch) {
+        //存储自身的位置，让目标位置在自身位置的基础上相加移动距离（达到随手指滑动而非瞬移）（瞬移用setPosition()）
         const p = this.node.position;
         let targetPosition = new Vec3(p.x + event.getDelta().x, p.y + event.getDelta().y, p.z);
         //边界限制

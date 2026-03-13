@@ -3,13 +3,7 @@ const { ccclass, property } = _decorator;
 
 @ccclass('SatrtGame')
 export class SatrtGame extends Component {
-    start() {
 
-    }
-
-    update(deltaTime: number) {
-        
-    }
   public  LoadScene(){
         director.loadScene("GameScene");
     }

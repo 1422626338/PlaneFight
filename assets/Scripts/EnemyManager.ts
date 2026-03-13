@@ -4,11 +4,11 @@ const { ccclass, property } = _decorator;
 @ccclass('EnemyManager')
 export class EnemyManager extends Component {
 
+    //敌人的生成
     @property(Prefab)
     enemy0Prefab:Prefab = null;
     @property
     enmy0SpawnRate:number = 1;
-
 
     start() {
         this.schedule(this.enemy0Spawn, this.enmy0SpawnRate);
