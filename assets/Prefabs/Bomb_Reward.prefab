@@ -59,7 +59,7 @@
       "z": 1
     },
     "_mobility": 0,
-    "_layer": 33554432,
+    "_layer": 1,
     "_euler": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -221,6 +221,7 @@
     "__prefab": {
       "__id__": 11
     },
+    "rewardType": 0,
     "rewardSpeed": 100,
     "collider": {
       "__id__": 6

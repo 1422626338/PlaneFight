@@ -1,14 +1,19 @@
-import { _decorator, Component, Input, input, Node, EventTouch, Vec3, Prefab, instantiate, Collider2D, Contact2DType, IPhysics2DContact } from 'cc';
+import { _decorator, Component, Input, input, Node, EventTouch, Vec3, Prefab, instantiate, Collider2D, Contact2DType, IPhysics2DContact, animation, Animation } from 'cc';
 import { Reward, RewardType } from './Reward';
 const { ccclass, property } = _decorator;
+
 
 enum ShootType {
     OneShoot,
     TwoShoot,
+    None,
 }
 
 @ccclass('Player')
 export class Player extends Component {
+    //玩家血量
+    @property
+    playerHp :number= 3;
 
     //子弹
     //子弹发射计时器
@@ -46,12 +51,27 @@ export class Player extends Component {
     //双发时间
     twoShootTime : number = 5;
     //双发计时器
-    twoShootTimer:number = 0;
-    
+    twoShootTimer:number = 0;  
+
+    //玩家动画
+    @property(Animation)
+    anim:Animation = null;
+    @property
+    animHit : string = "";
+    @property
+    animDown : string =""
+
+    //玩家无敌计时器
+    @property
+    invincibleTime : number = 1;
+    invincibleTimer:number =0;
+    isInvincible :boolean = false;
 
     //当前射击类型
     @property
     shootType: ShootType = ShootType.OneShoot;
+
+    isDead : boolean = false;
 
     protected onLoad(): void {
         input.on(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
@@ -75,13 +95,13 @@ export class Player extends Component {
             this.onContactToReward(reward);
         }
         else {
-            //this.onContactToEnemy();
+            this.onContactToEnemy();
         }
     }
 
 
     lastReward: Reward = null;
-    //碰撞逻辑（碰到谁）
+    //碰到奖励
     onContactToReward(reward: Reward) {
         //防止多次触发
         if (reward === this.lastReward) {
@@ -98,6 +118,29 @@ export class Player extends Component {
                 ////TODO：逻辑
                 break;
         }
+    }
+
+    //碰到敌人
+    onContactToEnemy(){
+        if(this.isInvincible) return;
+
+        //扣血，进入无敌
+        this.isInvincible = true;
+        this.playerHp -=1;
+        this.invincibleTimer =0;
+
+        //播放动画
+        if(this.playerHp>0){
+            this.anim.play(this.animHit);
+        }
+        else{
+            this.anim.play(this.animDown);
+            // 可选：血量为0时，停止射击、禁用碰撞（避免后续无效逻辑）
+            this.shootType = ShootType.None;    //停止射击
+            this.collider.enabled = false;
+            this.isDead = true;
+        }
+        
     }
 
     //切换成双发射击
@@ -118,6 +161,9 @@ export class Player extends Component {
     }
 
     onTouchMove(event: EventTouch) {
+        //先判断是否死亡
+        if(this.isDead) return;
+
         //存储自身的位置，让目标位置在自身位置的基础上相加移动距离（达到随手指滑动而非瞬移）（瞬移用setPosition()）
         const p = this.node.position;
         let targetPosition = new Vec3(p.x + event.getDelta().x, p.y + event.getDelta().y, p.z);
@@ -135,6 +181,14 @@ export class Player extends Component {
             case ShootType.TwoShoot:
                 this.TwoShoot(deltaTime);
                 break;
+        }
+
+        //无敌计时器
+        if(this.isInvincible){
+            this.invincibleTimer += deltaTime;
+            if(this.invincibleTimer >= this.invincibleTime){
+                this.isInvincible = false;
+            }
         }
     }
 
