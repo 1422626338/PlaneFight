@@ -1097,6 +1097,7 @@
     "collider": {
       "__id__": 30
     },
+    "twoShootTime": 5,
     "shootType": 0,
     "_id": "55M4y8tIpEe7k3iJTb+IDP"
   },

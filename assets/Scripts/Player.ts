@@ -42,6 +42,13 @@ export class Player extends Component {
     @property(Collider2D)   //用于碰撞检测
     collider: Collider2D = null;
 
+    @property
+    //双发时间
+    twoShootTime : number = 5;
+    //双发计时器
+    twoShootTimer:number = 0;
+    
+
     //当前射击类型
     @property
     shootType: ShootType = ShootType.OneShoot;
@@ -85,6 +92,7 @@ export class Player extends Component {
             case RewardType.TwoShoot:
                 //TODO：逻辑
                 //转变发射模式
+                this.transitionToTwoShoot();
                 break;
             case RewardType.Bomb:
                 ////TODO：逻辑
@@ -92,9 +100,17 @@ export class Player extends Component {
         }
     }
 
+    //切换成双发射击
     transitionToTwoShoot()
     {
         this.shootType = ShootType.TwoShoot;
+        this.twoShootTimer = 0;
+    }
+
+    //切换成单发射击
+    transitionToOneShoot()
+    {
+        this.shootType = ShootType.OneShoot;
     }
 
     protected onDestroy(): void {
@@ -137,6 +153,12 @@ export class Player extends Component {
     }
     ////双发子弹类型
     private TwoShoot(deltaTime: number) {
+        //双发奖励时间
+        this.twoShootTimer +=deltaTime;
+        if(this.twoShootTimer > this.twoShootTime){
+            this.transitionToOneShoot();
+        }
+
         this.shootTimer += deltaTime;
         if (this.shootTimer > this.shootRate) {
             this.shootTimer = 0;
