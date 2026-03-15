@@ -11,7 +11,7 @@ export class RewardManager extends Component {
     }
 
     @property   //奖励生成时间
-    rewardSpawnRate  : number = 10;
+    rewardSpawnRate  : number = 5;
 
     //炸弹奖励
     @property(Prefab)
@@ -26,12 +26,16 @@ export class RewardManager extends Component {
         RewardManager.instance = this;
     }
 
+    //启动生成奖励
     start() {
-
+        this.schedule(this.spawnReward,this.rewardSpawnRate);
     }
 
     update(deltaTime: number) {
         
+    }
+    protected onDestroy(): void {
+        this.unschedule(this.spawnReward);
     }
     
     spawnReward()
@@ -45,11 +49,11 @@ export class RewardManager extends Component {
         {
             prefab = this.bombReward;
         }
-        const br = instantiate(this.bombReward);
-        this.node.addChild(br);
+        const reward = instantiate(prefab);
+        this.node.addChild(reward);
 
         const randomX = math.randomRangeInt(-200,200);
-        br.setPosition(randomX,475,0);
+        reward.setPosition(randomX,475,0);
     }
 }
 

@@ -25,7 +25,8 @@ export class Enemy extends Component {
     private isDead: boolean = false;
 
     protected start(): void {
-        // 注册单个碰撞体的回调函数
+        // 注册单个碰撞体的回调函数     //最后一个this非常重要，最后一个 this 用来指定回调函数 onBeginContact 内部的 this 指向，
+        // 确保回调里能正确访问当前组件的属性 / 方法。
         if (this.enemyCollider) {
             this.enemyCollider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
