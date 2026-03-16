@@ -1,5 +1,6 @@
 import { _decorator, Component, Input, input, Node, EventTouch, Vec3, Prefab, instantiate, Collider2D, Contact2DType, IPhysics2DContact, animation, Animation } from 'cc';
 import { Reward, RewardType } from './Reward';
+import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 
 
@@ -128,6 +129,7 @@ export class Player extends Component {
         this.isInvincible = true;
         this.playerHp -=1;
         this.invincibleTimer =0;
+        GameManager.getInstance().updatePlayerHp(this.playerHp);
 
         //播放动画
         if(this.playerHp>0){

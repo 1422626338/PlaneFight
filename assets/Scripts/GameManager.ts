@@ -5,7 +5,7 @@ const { ccclass, property } = _decorator;
 @ccclass('GameManager')
 export class GameManager extends Component {
 
-    static instance :GameManager;
+    private static instance :GameManager;
     public static getInstance():GameManager{
         return this.instance;
     }
@@ -15,6 +15,10 @@ export class GameManager extends Component {
     //分数节点
     @property(ScoreUI)
     scoreUI : ScoreUI = null;
+
+    //玩家生命值
+    playerHp : number = 3;
+
 
     protected onLoad(): void {
         //一定要初始化
@@ -33,6 +37,15 @@ export class GameManager extends Component {
     addScore(s:number){
         this.score += s;
         this.scoreUI.updateScore(this.score);
+    }
+
+    //更新角色HP
+    updatePlayerHp(hp:number){
+        this.playerHp = hp;
+        this.node.emit("onHpChange");
+    }
+    public GetPlayerHpNumber(){
+        return this.playerHp;
     }
 }
 

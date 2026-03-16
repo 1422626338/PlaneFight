@@ -13,6 +13,8 @@ export class Enemy extends Component {
 
     @property//敌人血量
     enemyHp: number = 1;
+    @property//分数
+    enemyScore:number = 10;
 
     //敌人动画
     @property(Animation)
@@ -59,7 +61,7 @@ export class Enemy extends Component {
             selfCollider.enabled = false;
 
             //添加分数
-            GameManager.instance.addScore(10);
+            GameManager.getInstance().addScore(this.enemyScore);
         }
     }
 

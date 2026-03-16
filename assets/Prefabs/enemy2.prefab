@@ -286,6 +286,7 @@
       "__id__": 14
     },
     "enemyHp": 10,
+    "enemyScore": 100,
     "anim": {
       "__id__": 7
     },
@@ -406,6 +407,7 @@
       "__id__": 0
     },
     "fileId": "9bXS2xhfdEP58MdsNU16Zu",
+    "instance": null,
     "targetOverrides": []
   }
 ]
