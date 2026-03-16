@@ -1,5 +1,6 @@
 import { _decorator, Animation, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, Sprite } from 'cc';
 import { Bullet } from './Bullet';
+import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Enemy')
@@ -56,6 +57,9 @@ export class Enemy extends Component {
 
             //把自身的碰撞体禁用，防止重复触发伤害。
             selfCollider.enabled = false;
+
+            //添加分数
+            GameManager.instance.addScore(10);
         }
     }
 
